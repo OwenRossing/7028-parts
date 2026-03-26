@@ -1,11 +1,13 @@
 export const queryKeys = {
+  me: ["me"] as const,
+  users: ["users"] as const,
+  projects: {
+    all: ["projects"] as const,
+    detail: (id: string) => ["projects", id] as const,
+  },
   parts: {
-    all: ["parts"] as const,
-    list: (queryString: string) => ["parts", queryString] as const
+    list: (projectId: string, params?: string) => ["parts", projectId, params ?? ""] as const,
+    detail: (partId: string) => ["parts", "detail", partId] as const,
   },
-  metrics: {
-    all: ["parts-metrics"] as const,
-    byProject: (projectId: string | null) => ["parts-metrics", projectId ?? "all"] as const
-  },
-  me: ["me"] as const
+  workspace: ["workspace"] as const,
 };
