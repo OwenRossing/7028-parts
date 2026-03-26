@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
 import { isDemoMode, isLocalMode } from "@/lib/app-mode";
 
-export const AUTH_COOKIE_NAME = env.DEMO_SESSION_COOKIE;
+export const AUTH_COOKIE_NAME = env.SESSION_COOKIE;
 const SESSION_TTL_SECONDS = env.SESSION_TTL_SECONDS;
 
 type SessionUserRecord = { id: string };
