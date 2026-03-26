@@ -4,13 +4,28 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:db": "docker compose up -d db",
+    "dev:all": "docker compose up -d db && npx prisma db push && npx prisma db seed && next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "db:push": "prisma db push",
+    "db:seed": "npx ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
+    "db:reset": "prisma migrate reset --force && npm run db:seed"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@prisma/client": "^7.5.0",
+    "@tanstack/react-query": "^5.95.2",
+    "@tanstack/react-virtual": "^3.13.23",
+    "lucide-react": "^1.7.0",
     "next": "16.2.1",
+    "prisma": "^7.5.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.72.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
