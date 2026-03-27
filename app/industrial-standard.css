@@ -1,0 +1,904 @@
+/*
+ * INDUSTRIAL STANDARD — Theme CSS
+ * 7028 Parts Tracker
+ *
+ * Industrial clarity, not industrial cosplay.
+ * Palette: Phosphor amber on warm black, ISA-101 status colors.
+ * Typography: Pure monospace, tabular-nums everywhere. No decoration.
+ */
+
+/* ============================================================
+   BASE RESET + ROOT TOKENS
+   ============================================================ */
+
+:root {
+  /* --- Core palette --- */
+  --sa-black:      #080a08;   /* Warm black — not pure */
+  --sa-deep:       #0d0f0c;   /* Panel background */
+  --sa-panel:      #111410;   /* Elevated surface */
+  --sa-raised:     #181c16;   /* Modal / overlay surface */
+  --sa-border:     #2a3024;   /* Standard border */
+  --sa-border-lit: #3d4a30;   /* Active/focus border */
+
+  /* --- Amber phosphor palette --- */
+  --sa-amber-900:  #1a0e00;
+  --sa-amber-700:  #7a4400;   /* Dim — inactive labels */
+  --sa-amber-600:  #b35e00;   /* Mid — secondary text */
+  --sa-amber-500:  #d97a00;   /* Primary — main text */
+  --sa-amber-400:  #f59800;   /* Bright — active text / highlights */
+  --sa-amber-300:  #ffb833;   /* Hot — selected / focus / headings */
+  --sa-amber-200:  #ffd680;   /* Critical emphasis only */
+  --sa-amber-glow: rgba(245, 152, 0, 0.12);
+  --sa-amber-halo: rgba(245, 152, 0, 0.06);
+
+  /* --- Status colors (ISA-101) --- */
+  --sa-ok:         #39c96e;   /* DONE / nominal */
+  --sa-ok-dim:     #1a5c33;
+  --sa-warn:       #f5c800;   /* MACHINED / in-progress */
+  --sa-warn-dim:   #5c4a00;
+  --sa-alert:      #e84040;   /* OVERDUE / error */
+  --sa-alert-dim:  #5c1414;
+  --sa-info:       #3ab8e8;   /* DESIGNED */
+  --sa-info-dim:   #0f4466;
+  --sa-cut:        #9b6eff;   /* CUT */
+  --sa-cut-dim:    #3d2080;
+  --sa-assembled:  #ff8c3a;   /* ASSEMBLED */
+  --sa-verified:   #39c96e;   /* VERIFIED */
+
+  /* --- Typography --- */
+  --sa-font-mono:  "Courier New", "Lucida Console", "Consolas", monospace;
+  --sa-font-ui:    var(--sa-font-mono);
+
+  /* --- Sizing --- */
+  --sa-radius:     0px;
+  --sa-border-w:   1px;
+
+  /* --- Shadow --- */
+  --sa-shadow-panel: 0 0 0 1px var(--sa-border), 0 4px 20px rgba(0,0,0,0.6);
+  --sa-shadow-active: 0 0 0 1px var(--sa-amber-400);
+
+  /* --- Motion --- */
+  --sa-transition:   80ms linear;
+}
+
+/* ============================================================
+   GLOBAL RESETS FOR THEME
+   ============================================================ */
+
+.sa-theme *,
+.sa-theme *::before,
+.sa-theme *::after {
+  box-sizing: border-box;
+}
+
+.sa-theme {
+  background-color: var(--sa-black);
+  color: var(--sa-amber-500);
+  font-family: var(--sa-font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: none;
+  font-smoothing: none;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+.sa-theme ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.sa-theme ::-webkit-scrollbar-track {
+  background: var(--sa-black);
+}
+.sa-theme ::-webkit-scrollbar-thumb {
+  background: var(--sa-amber-700);
+}
+.sa-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--sa-amber-500);
+}
+
+/* ============================================================
+   SELECTION + FOCUS
+   ============================================================ */
+
+.sa-theme ::selection {
+  background: var(--sa-amber-700);
+  color: var(--sa-amber-200);
+}
+
+.sa-theme :focus-visible {
+  outline: 1px solid var(--sa-amber-400);
+  outline-offset: 1px;
+}
+
+/* ============================================================
+   LAYOUT PRIMITIVES
+   ============================================================ */
+
+.sa-shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--sa-black);
+}
+
+.sa-header {
+  height: 36px;
+  background: var(--sa-deep);
+  border-bottom: 1px solid var(--sa-border-lit);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.sa-header-title {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sa-amber-300);
+}
+
+.sa-statusbar {
+  height: 22px;
+  background: var(--sa-deep);
+  border-top: 1px solid var(--sa-border);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 16px;
+  font-size: 10px;
+  color: var(--sa-amber-600);
+  letter-spacing: 0.08em;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.sa-sidebar {
+  width: 288px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--sa-deep);
+  border-right: 1px solid var(--sa-border-lit);
+  height: 100%;
+  position: relative;
+}
+
+.sa-sidebar-head {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--sa-border);
+}
+
+/* Project select — instrument selector style */
+.sa-select {
+  width: 100%;
+  background: var(--sa-panel);
+  border: 1px solid var(--sa-border-lit);
+  color: var(--sa-amber-400);
+  font-family: var(--sa-font-mono);
+  font-size: 12px;
+  padding: 5px 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23d97a00'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 24px;
+}
+.sa-select:focus {
+  outline: 1px solid var(--sa-amber-400);
+}
+.sa-select option {
+  background: var(--sa-panel);
+  color: var(--sa-amber-400);
+}
+
+.sa-sidebar-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--sa-amber-600);
+  letter-spacing: 0.08em;
+}
+
+/* Live / offline indicator */
+.sa-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.sa-indicator-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--sa-alert);
+}
+
+.sa-indicator-dot--live {
+  background: var(--sa-ok);
+}
+
+/* ============================================================
+   NAV TABS
+   ============================================================ */
+
+.sa-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--sa-border-lit);
+}
+
+.sa-tab {
+  flex: 1;
+  padding: 7px 4px;
+  font-family: var(--sa-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--sa-amber-600);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color var(--sa-transition), border-color var(--sa-transition);
+}
+
+.sa-tab:hover {
+  color: var(--sa-amber-400);
+}
+
+.sa-tab--active {
+  color: var(--sa-amber-300);
+  border-bottom-color: var(--sa-amber-400);
+}
+
+/* ============================================================
+   SEARCH + FILTER BAR
+   ============================================================ */
+
+.sa-search-wrap {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--sa-border);
+}
+
+.sa-input {
+  width: 100%;
+  background: var(--sa-black);
+  border: 1px solid var(--sa-border-lit);
+  color: var(--sa-amber-400);
+  font-family: var(--sa-font-mono);
+  font-size: 12px;
+  padding: 5px 8px;
+  caret-color: var(--sa-amber-300);
+}
+.sa-input::placeholder {
+  color: var(--sa-amber-700);
+}
+.sa-input:focus {
+  outline: 1px solid var(--sa-amber-400);
+  border-color: var(--sa-amber-400);
+}
+
+/* Filter section */
+.sa-filter-section {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--sa-border);
+}
+
+.sa-filter-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sa-amber-700);
+  margin-bottom: 6px;
+}
+
+.sa-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* Status filter chip */
+.sa-chip {
+  padding: 2px 6px;
+  font-family: var(--sa-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--sa-border-lit);
+  color: var(--sa-amber-600);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--sa-transition);
+}
+.sa-chip:hover {
+  border-color: var(--sa-amber-500);
+  color: var(--sa-amber-400);
+}
+.sa-chip--active {
+  border-color: var(--sa-amber-400);
+  color: var(--sa-amber-300);
+  background: var(--sa-amber-glow);
+}
+
+/* ============================================================
+   GROUP HEADERS (virtual list)
+   ============================================================ */
+
+.sa-group-header {
+  padding: 4px 12px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sa-amber-700);
+  background: var(--sa-deep);
+  border-bottom: 1px solid var(--sa-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.sa-group-header::before {
+  content: "▶ ";
+  font-size: 8px;
+  color: var(--sa-amber-600);
+}
+
+/* ============================================================
+   PART LIST ITEM
+   ============================================================ */
+
+.sa-part-item {
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--sa-border);
+  border-left: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--sa-font-mono);
+  transition: background var(--sa-transition), border-left-color var(--sa-transition);
+  position: relative;
+}
+
+.sa-part-item:hover {
+  background: var(--sa-amber-halo);
+  border-left-color: var(--sa-amber-600);
+}
+
+.sa-part-item--selected {
+  background: var(--sa-amber-glow);
+  border-left-color: var(--sa-amber-400);
+}
+
+/* Part number */
+.sa-part-num {
+  font-size: 10px;
+  color: var(--sa-amber-600);
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Part name */
+.sa-part-name {
+  font-size: 12px;
+  color: var(--sa-amber-400);
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sa-part-name--done {
+  color: var(--sa-ok);
+  text-decoration: line-through;
+  text-decoration-color: var(--sa-ok-dim);
+}
+
+/* Owner */
+.sa-part-owner {
+  font-size: 10px;
+  color: var(--sa-amber-700);
+  margin-top: 1px;
+}
+
+/* Status badge (inline) — 2px left border accent, no background fill */
+.sa-status-badge {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 1px 4px;
+  border-left: 2px solid currentColor;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Status color map */
+.sa-status-badge--designed  { color: var(--sa-info); }
+.sa-status-badge--cut       { color: var(--sa-cut); }
+.sa-status-badge--machined  { color: var(--sa-warn); }
+.sa-status-badge--assembled { color: var(--sa-assembled); }
+.sa-status-badge--verified  { color: var(--sa-ok); }
+.sa-status-badge--done      { color: var(--sa-ok); }
+
+/* Quantity progress */
+.sa-part-qty {
+  font-size: 10px;
+  color: var(--sa-amber-600);
+  font-variant-numeric: tabular-nums;
+  margin-top: 1px;
+}
+
+/* ============================================================
+   ADD PART BUTTON
+   ============================================================ */
+
+.sa-sidebar-footer {
+  padding: 10px 12px;
+  border-top: 1px solid var(--sa-border-lit);
+}
+
+.sa-btn-add {
+  width: 100%;
+  padding: 7px 12px;
+  font-family: var(--sa-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--sa-amber-400);
+  background: transparent;
+  border: 1px solid var(--sa-amber-600);
+  cursor: pointer;
+  transition: all var(--sa-transition);
+}
+
+.sa-btn-add:hover {
+  border-color: var(--sa-amber-400);
+  color: var(--sa-amber-300);
+}
+
+.sa-btn-add:active {
+  background: var(--sa-amber-glow);
+}
+
+/* ============================================================
+   PRIMARY ACTION BUTTON
+   ============================================================ */
+
+.sa-btn-primary {
+  padding: 7px 16px;
+  font-family: var(--sa-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--sa-black);
+  background: var(--sa-amber-500);
+  border: 1px solid var(--sa-amber-400);
+  cursor: pointer;
+  transition: all var(--sa-transition);
+  font-weight: bold;
+}
+
+.sa-btn-primary:hover {
+  background: var(--sa-amber-400);
+}
+
+.sa-btn-primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Secondary button */
+.sa-btn-secondary {
+  padding: 6px 12px;
+  font-family: var(--sa-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sa-amber-500);
+  background: transparent;
+  border: 1px solid var(--sa-border-lit);
+  cursor: pointer;
+  transition: all var(--sa-transition);
+}
+
+.sa-btn-secondary:hover {
+  border-color: var(--sa-amber-600);
+  color: var(--sa-amber-400);
+}
+
+/* ============================================================
+   LOGIN CARD
+   ============================================================ */
+
+.sa-login-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sa-black);
+  padding: 24px;
+}
+
+.sa-login-card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--sa-deep);
+  border: 1px solid var(--sa-border-lit);
+  padding: 32px;
+}
+
+.sa-login-logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.sa-login-logo-text {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.25em;
+  color: var(--sa-amber-300);
+  text-transform: uppercase;
+}
+
+.sa-login-logo-sub {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sa-amber-700);
+  margin-top: 4px;
+}
+
+/* Divider with label */
+.sa-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  color: var(--sa-amber-700);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.sa-divider::before,
+.sa-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--sa-border-lit);
+}
+
+/* Horizontal rule separator */
+.sa-hr {
+  border: none;
+  border-top: 1px solid rgba(245, 152, 0, 0.12);
+  margin: 8px 0;
+}
+
+/* Error message */
+.sa-error {
+  font-size: 10px;
+  color: var(--sa-alert);
+  border-left: 2px solid var(--sa-alert);
+  padding: 6px 8px;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+.sa-error::before {
+  content: "ERR: ";
+  font-weight: bold;
+}
+
+/* Section label */
+.sa-form-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sa-amber-700);
+  margin-bottom: 8px;
+}
+
+/* ============================================================
+   CARDS / PANELS — subtle border for structure
+   ============================================================ */
+
+.sa-card {
+  border: 1px solid rgba(245, 152, 0, 0.15);
+  background: var(--sa-deep);
+}
+
+/* ============================================================
+   PART DETAIL PANEL
+   ============================================================ */
+
+.sa-detail-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--sa-black);
+  overflow: hidden;
+}
+
+.sa-detail-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--sa-border-lit);
+  background: var(--sa-deep);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sa-detail-part-num {
+  font-size: 11px;
+  color: var(--sa-amber-600);
+  letter-spacing: 0.15em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sa-detail-part-name {
+  font-size: 16px;
+  color: var(--sa-amber-300);
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Data table / property grid */
+.sa-data-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 0;
+  border-top: 1px solid var(--sa-border);
+  border-left: 1px solid var(--sa-border);
+}
+
+.sa-data-cell {
+  padding: 6px 12px;
+  font-size: 11px;
+  border-right: 1px solid var(--sa-border);
+  border-bottom: 1px solid var(--sa-border);
+}
+
+.sa-data-cell--key {
+  color: var(--sa-amber-700);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--sa-deep);
+}
+
+.sa-data-cell--value {
+  color: var(--sa-amber-400);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Progress bar */
+.sa-progress-wrap {
+  height: 6px;
+  background: var(--sa-deep);
+  border: 1px solid var(--sa-border);
+  overflow: hidden;
+  position: relative;
+}
+
+.sa-progress-fill {
+  height: 100%;
+  background: var(--sa-amber-500);
+  transition: width 200ms linear;
+}
+
+.sa-progress-fill--done {
+  background: var(--sa-ok);
+}
+
+/* ============================================================
+   KANBAN STATUS BADGES (larger, for detail view)
+   ============================================================ */
+
+.sa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-left: 2px solid currentColor;
+  font-variant-numeric: tabular-nums;
+}
+
+.sa-badge--designed  { color: var(--sa-info); }
+.sa-badge--cut       { color: var(--sa-cut); }
+.sa-badge--machined  { color: var(--sa-warn); }
+.sa-badge--assembled { color: var(--sa-assembled); }
+.sa-badge--verified  { color: var(--sa-ok); }
+.sa-badge--done      { color: var(--sa-ok); }
+
+/* ============================================================
+   MODAL / DIALOG
+   ============================================================ */
+
+.sa-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.sa-modal {
+  background: var(--sa-panel);
+  border: 1px solid var(--sa-border-lit);
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.sa-modal-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--sa-border-lit);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--sa-deep);
+}
+
+.sa-modal-title {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sa-amber-300);
+}
+
+.sa-modal-body {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+
+.sa-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sa-amber-700);
+}
+
+.sa-value {
+  font-size: 13px;
+  color: var(--sa-amber-400);
+  font-variant-numeric: tabular-nums;
+}
+
+.sa-value--bright {
+  color: var(--sa-amber-300);
+}
+
+.sa-mono {
+  font-family: var(--sa-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.sa-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 32px;
+  gap: 12px;
+}
+
+.sa-empty-icon {
+  font-size: 36px;
+  color: var(--sa-amber-700);
+  font-family: var(--sa-font-mono);
+  letter-spacing: -0.1em;
+}
+
+.sa-empty-msg {
+  font-size: 11px;
+  color: var(--sa-amber-600);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   USER LIST (login)
+   ============================================================ */
+
+.sa-user-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--sa-border-lit);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.sa-user-item {
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  font-family: var(--sa-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--sa-amber-500);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--sa-border);
+  cursor: pointer;
+  transition: background var(--sa-transition), color var(--sa-transition);
+}
+
+.sa-user-item:last-child {
+  border-bottom: none;
+}
+
+.sa-user-item:hover {
+  background: var(--sa-amber-halo);
+  color: var(--sa-amber-400);
+}
+
+.sa-user-item--selected {
+  background: var(--sa-amber-glow);
+  color: var(--sa-amber-300);
+  border-left: 2px solid var(--sa-amber-400);
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+.sa-border-top    { border-top: 1px solid var(--sa-border); }
+.sa-border-bottom { border-bottom: 1px solid var(--sa-border); }
+.sa-border-lit    { border-color: var(--sa-border-lit) !important; }
+
+.sa-text-amber    { color: var(--sa-amber-400); }
+.sa-text-dim      { color: var(--sa-amber-700); }
+.sa-text-bright   { color: var(--sa-amber-300); }
+.sa-text-ok       { color: var(--sa-ok); }
+.sa-text-warn     { color: var(--sa-warn); }
+.sa-text-alert    { color: var(--sa-alert); }
+
+.sa-bg-deep       { background: var(--sa-deep); }
+.sa-bg-panel      { background: var(--sa-panel); }
+.sa-bg-raised     { background: var(--sa-raised); }
+
+/* Labels — instrument-panel readability */
+.sa-label,
+.sa-filter-label,
+.sa-form-label {
+  letter-spacing: 0.05em;
+}
