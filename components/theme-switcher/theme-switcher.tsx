@@ -21,14 +21,14 @@ const THEME_OPTIONS: ThemeOption[] = [
     swatchColors: ["#dce8f8", "#ffffff", "#e8dff5"],
   },
   {
-    id: "android17",
-    label: "Android 17",
-    swatchColors: ["#1a1b2e", "#3d5afe", "#90caf9"],
+    id: "cinnamon-bun",
+    label: "Cinnamon Bun",
+    swatchColors: ["#1a0e08", "#a0522d", "#f5deb3"],
   },
   {
-    id: "shop-floor",
-    label: "Shop Floor",
-    swatchColors: ["#1a1400", "#ff9800", "#ffb300"],
+    id: "industrial-standard",
+    label: "Industrial Standard",
+    swatchColors: ["#080a08", "#ffb300", "#2a3024"],
   },
 ];
 

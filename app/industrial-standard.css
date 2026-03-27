@@ -11,7 +11,7 @@
    BASE RESET + ROOT TOKENS
    ============================================================ */
 
-:root {
+html.industrial-standard {
   /* --- Core palette --- */
   --sa-black:      #080a08;   /* Warm black — not pure */
   --sa-deep:       #0d0f0c;   /* Panel background */

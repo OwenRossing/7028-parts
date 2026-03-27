@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Theme overrides — each file is scoped to html.<theme-name>
+   ============================================================ */
+@import "./cinnamon-bun.css";
+@import "./industrial-standard.css";
+
 * {
   box-sizing: border-box;
 }
