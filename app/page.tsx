@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { isEmailAdmin } from "@/lib/admin";
 import { Providers } from "@/components/providers";
 import { PartsExplorer } from "@/components/parts-explorer";
+import { NoProjectsScreen } from "@/components/parts-explorer/no-projects-screen";
 import type { CurrentUser, ProjectSummary } from "@/types";
 
 export default async function HomePage() {
@@ -39,9 +40,9 @@ export default async function HomePage() {
 
   if (serializedProjects.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-ink-dim text-sm">
-        No projects yet. An admin needs to create one first.
-      </div>
+      <Providers>
+        <NoProjectsScreen currentUser={currentUser} />
+      </Providers>
     );
   }
 

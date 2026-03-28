@@ -1,10 +1,131 @@
 @import "tailwindcss";
 
 /* ============================================================
+   Tailwind v4 @theme — wires semantic tokens to CSS variables
+   so bg-surface-page, text-ink, border-rim etc. are generated
+   as var()-backed utilities (theme-switchable at runtime).
+   ============================================================ */
+@theme {
+  --color-surface-page:        var(--surface-page);
+  --color-surface-header:      var(--surface-header);
+  --color-surface-card:        var(--surface-card);
+  --color-surface-modal:       var(--surface-modal);
+  --color-surface-raised:      var(--surface-raised);
+  --color-surface-hover:       var(--surface-hover);
+  --color-surface-nav:         var(--surface-nav);
+  --color-surface-sidebar:     var(--surface-sidebar);
+  --color-surface-btn:         var(--surface-btn);
+  --color-surface-btn-hover:   var(--surface-btn-hover);
+
+  --color-rim:                 var(--rim);
+  --color-rim-soft:            var(--rim-soft);
+  --color-rim-light:           var(--rim-light);
+  --color-rim-btn:             var(--rim-btn);
+  --color-rim-brand:           var(--rim-brand);
+  --color-rim-brand-dark:      var(--rim-brand-dark);
+
+  --color-ink:                 var(--ink);
+  --color-ink-alt:             var(--ink-alt);
+  --color-ink-label:           var(--ink-label);
+  --color-ink-muted:           var(--ink-muted);
+  --color-ink-dim:             var(--ink-dim);
+  --color-ink-brand:           var(--ink-brand);
+  --color-ink-bright:          var(--ink-bright);
+  --color-ink-link:            var(--ink-link);
+}
+
+/* ============================================================
    Theme overrides — each file is scoped to html.<theme-name>
    ============================================================ */
-@import "./cinnamon-bun.css";
 @import "./industrial-standard.css";
+@import "./liquid-glass.css";
+
+/* ============================================================
+   Default theme — Dark Steel
+   ============================================================ */
+:root {
+  --surface-page:     #171a21;
+  --surface-header:   #171d25;
+  --surface-card:     #1d2633;
+  --surface-modal:    #202833;
+  --surface-raised:   #2b313d;
+  --surface-hover:    #3f4a5b;
+  --surface-nav:      #25272d;
+  --surface-sidebar:  #24282f;
+  --surface-btn:      #3a4659;
+  --surface-btn-hover:#4a5970;
+  --rim:              #31465f;
+  --rim-soft:         #3f4a5b;
+  --rim-light:        #5f7a9a;
+  --rim-btn:          #435266;
+  --rim-brand:        #1a9fff;
+  --rim-brand-dark:   #2f6eb6;
+  --ink:              #d6e4f2;
+  --ink-alt:          #dcdedf;
+  --ink-label:        #9aa8b8;
+  --ink-muted:        #9fb0c2;
+  --ink-dim:          #8f98a0;
+  --ink-brand:        #1a9fff;
+  --ink-bright:       #cae4fb;
+  --ink-link:         #7cc5ff;
+}
+
+/* Industrial Standard — phosphor amber ISA-101 */
+html.industrial-standard {
+  --surface-page:     #080a08;
+  --surface-header:   #080a08;
+  --surface-card:     #111410;
+  --surface-modal:    #141814;
+  --surface-raised:   #181c16;
+  --surface-hover:    #202820;
+  --surface-nav:      #0d0f0c;
+  --surface-sidebar:  #0d0f0c;
+  --surface-btn:      #1e2a1e;
+  --surface-btn-hover:#2a3824;
+  --rim:              #2a3024;
+  --rim-soft:         #202820;
+  --rim-light:        #3d4a30;
+  --rim-btn:          #2a3824;
+  --rim-brand:        #f59800;
+  --rim-brand-dark:   #b35e00;
+  --ink:              #d97a00;
+  --ink-alt:          #d97a00;
+  --ink-label:        #b35e00;
+  --ink-muted:        #a05500;
+  --ink-dim:          #7a4400;
+  --ink-brand:        #f59800;
+  --ink-bright:       #ffb833;
+  --ink-link:         #ffb833;
+}
+html.industrial-standard body { font-family: 'Courier New', monospace; }
+
+/* Liquid Glass — color tokens (effects in liquid-glass.css) */
+html.liquid-glass {
+  --surface-page:     #0a0e1a;
+  --surface-header:   rgba(10, 14, 26, 0.6);
+  --surface-card:     rgba(255, 255, 255, 0.05);
+  --surface-modal:    rgba(10, 18, 48, 0.78);
+  --surface-raised:   rgba(255, 255, 255, 0.08);
+  --surface-hover:    rgba(255, 255, 255, 0.09);
+  --surface-nav:      rgba(255, 255, 255, 0.04);
+  --surface-sidebar:  rgba(8, 14, 36, 0.45);
+  --surface-btn:      rgba(255, 255, 255, 0.08);
+  --surface-btn-hover:rgba(255, 255, 255, 0.14);
+  --rim:              rgba(255, 255, 255, 0.11);
+  --rim-soft:         rgba(255, 255, 255, 0.08);
+  --rim-light:        rgba(255, 255, 255, 0.22);
+  --rim-btn:          rgba(255, 255, 255, 0.14);
+  --rim-brand:        #66c0f4;
+  --rim-brand-dark:   #1a9fff;
+  --ink:              #eef6ff;
+  --ink-alt:          #d8ecfa;
+  --ink-label:        rgba(180, 215, 245, 0.85);
+  --ink-muted:        rgba(155, 195, 230, 0.75);
+  --ink-dim:          rgba(130, 172, 210, 0.65);
+  --ink-brand:        #66c0f4;
+  --ink-bright:       #cae4fb;
+  --ink-link:         #8fd3ff;
+}
 
 * {
   box-sizing: border-box;
@@ -48,3 +169,6 @@ body {
   outline: 1px solid #1a9fff;
   outline-offset: 2px;
 }
+
+/* Industrial Standard body override */
+html.industrial-standard body { background: #080a08; color: #d97a00; }

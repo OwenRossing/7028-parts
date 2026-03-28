@@ -1,8 +1,9 @@
 {
   "name": "7028-parts",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev",
     "dev:db": "docker compose up -d db",
     "dev:all": "docker compose up -d db && npx prisma db push && npx prisma db seed && next dev",
@@ -12,7 +13,12 @@
     "typecheck": "tsc --noEmit",
     "db:push": "prisma db push",
     "db:seed": "npx ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
-    "db:reset": "prisma migrate reset --force && npm run db:seed"
+    "db:reset": "prisma migrate reset --force && npm run db:seed",
+    "create-user": "npx ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/create-user.ts",
+    "remove-user": "npx ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/remove-user.ts"
+  },
+  "prisma": {
+    "seed": "npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1018.0",
@@ -35,6 +41,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "puppeteer": "^24.40.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

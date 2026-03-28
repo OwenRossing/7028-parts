@@ -17,7 +17,6 @@ function LoginForm({ appMode, googleClientId, googleAuthDomain }: LoginClientPro
   const qc = useQueryClient();
   const [masterKey, setMasterKey] = useState("");
   const [masterKeyVerified, setMasterKeyVerified] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const showLocal = appMode === "local" || appMode === "demo";
@@ -49,22 +48,9 @@ function LoginForm({ appMode, googleClientId, googleAuthDomain }: LoginClientPro
     onError: (e: Error) => setError(e.message),
   });
 
-  async function verifyMasterKey() {
+  function verifyMasterKey() {
     setError(null);
-    // Verify key by attempting to list users with it
-    const res = await fetch("/api/users", {
-      headers: { Cookie: document.cookie },
-    });
-    // We can't verify the key server-side without a real session.
-    // Instead, just try to log in with a placeholder and see if the key works.
-    // Actually the simplest approach: show the user picker and let the login attempt validate.
     setMasterKeyVerified(true);
-  }
-
-  function handleLocalLogin() {
-    if (!selectedUserId) { setError("Select a user."); return; }
-    setError(null);
-    localLogin.mutate({ userId: selectedUserId, masterKey });
   }
 
   return (
@@ -97,11 +83,12 @@ function LoginForm({ appMode, googleClientId, googleAuthDomain }: LoginClientPro
                 <div className="space-y-2">
                   <input
                     type="password"
-                    placeholder="Master key"
+                    placeholder="Entry key"
                     value={masterKey}
                     onChange={(e) => setMasterKey(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && verifyMasterKey()}
-                    className="w-full bg-surface-modal border border-rim-soft rounded-sm px-3 py-2 text-sm text-ink placeholder:text-ink-dim focus:outline-none focus:border-rim-brand"
+                    autoFocus
+                    className="w-full bg-surface-card border border-rim rounded-sm px-3 py-2 text-sm text-ink placeholder:text-ink-dim focus:outline-none focus:border-rim-brand"
                   />
                   <button
                     onClick={verifyMasterKey}
@@ -113,34 +100,34 @@ function LoginForm({ appMode, googleClientId, googleAuthDomain }: LoginClientPro
                 </div>
               ) : (
                 <div className="space-y-2">
+                  <p className="text-xs uppercase tracking-wide text-ink-dim">Select your account</p>
                   {usersQuery.isLoading ? (
                     <div className="text-ink-dim text-xs py-2">Loading users…</div>
                   ) : (
-                    <select
-                      value={selectedUserId}
-                      onChange={(e) => setSelectedUserId(e.target.value)}
-                      className="w-full bg-surface-modal border border-rim-soft rounded-sm px-3 py-2 text-sm text-ink focus:outline-none focus:border-rim-brand"
-                    >
-                      <option value="">Select your name…</option>
+                    <div className="grid gap-2">
                       {usersQuery.data?.users.map((u) => (
-                        <option key={u.id} value={u.id}>
-                          {u.displayName}
-                        </option>
+                        <button
+                          key={u.id}
+                          type="button"
+                          onClick={() => localLogin.mutate({ userId: u.id, masterKey })}
+                          disabled={localLogin.isPending}
+                          className="rounded border border-rim bg-surface-card px-3 py-2 text-left text-sm text-ink hover:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-60 transition-colors"
+                        >
+                          <div className="font-semibold">{u.displayName}</div>
+                          <div className="text-xs text-ink-dim">{u.email}</div>
+                        </button>
                       ))}
-                    </select>
+                      {!usersQuery.data?.users.length && (
+                        <p className="text-xs text-yellow-300">No users found. Run <code>npm run db:seed</code>.</p>
+                      )}
+                    </div>
                   )}
                   <button
-                    onClick={handleLocalLogin}
-                    disabled={!selectedUserId || localLogin.isPending}
-                    className="w-full bg-brand-600 hover:bg-brand-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium py-2 rounded-sm transition-colors"
-                  >
-                    {localLogin.isPending ? "Signing in…" : "Sign In"}
-                  </button>
-                  <button
+                    type="button"
                     onClick={() => { setMasterKeyVerified(false); setMasterKey(""); }}
-                    className="w-full text-ink-dim text-xs hover:text-ink transition-colors py-1"
+                    className="text-xs text-ink-dim hover:text-ink transition-colors"
                   >
-                    Change key
+                    ← Back
                   </button>
                 </div>
               )}

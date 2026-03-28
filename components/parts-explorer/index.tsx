@@ -8,6 +8,8 @@ import { useSSE } from "@/hooks/use-sse";
 import { Sidebar } from "./sidebar";
 import { PartDetail } from "./part-detail";
 import { AddPartDialog } from "./add-part-dialog";
+import { LiquidGlassSidebar } from "@/components/themes/liquid-glass/sidebar";
+import { useTheme } from "@/components/theme-switcher/theme-context";
 import type { PartSummary, CurrentUser, ProjectSummary, GroupBy, TabView } from "@/types";
 import type { SSEEvent } from "@/lib/sse-registry";
 
@@ -75,30 +77,37 @@ export function PartsExplorer({ initialProjects, currentUser }: PartsExplorerPro
   );
 
   const { connected } = useSSE(projectId || null, { onEvent: handleSSE });
+  const { theme } = useTheme();
 
   const parts = partsQuery.data?.parts ?? [];
 
+  const sidebarProps = {
+    projects: initialProjects,
+    projectId,
+    onProjectChange: (id: string) => setParam("project", id),
+    parts,
+    selectedPartId,
+    onSelectPart: (id: string) => setParam("part", id),
+    currentUser,
+    tab,
+    onTabChange: (t: TabView) => setParam("tab", t),
+    groupBy,
+    onGroupByChange: setGroupBy,
+    search,
+    onSearchChange: setSearch,
+    statusFilter,
+    onStatusFilterChange: setStatusFilter,
+    onAddPart: () => setShowAddPart(true),
+    connected,
+  };
+
   return (
     <div className="flex h-screen overflow-hidden bg-surface-page">
-      <Sidebar
-        projects={initialProjects}
-        projectId={projectId}
-        onProjectChange={(id) => setParam("project", id)}
-        parts={parts}
-        selectedPartId={selectedPartId}
-        onSelectPart={(id) => setParam("part", id)}
-        currentUser={currentUser}
-        tab={tab}
-        onTabChange={(t) => setParam("tab", t)}
-        groupBy={groupBy}
-        onGroupByChange={setGroupBy}
-        search={search}
-        onSearchChange={setSearch}
-        statusFilter={statusFilter}
-        onStatusFilterChange={setStatusFilter}
-        onAddPart={() => setShowAddPart(true)}
-        connected={connected}
-      />
+      {theme === "liquid-glass" ? (
+        <LiquidGlassSidebar {...sidebarProps} />
+      ) : (
+        <Sidebar {...sidebarProps} />
+      )}
 
       {/* Detail pane */}
       <div className="flex-1 flex flex-col overflow-hidden">

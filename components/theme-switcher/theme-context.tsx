@@ -9,10 +9,10 @@ import {
   type ReactNode,
 } from "react";
 
-export type Theme = "liquid-glass" | "cinnamon-bun" | "industrial-standard" | "default";
+export type Theme = "liquid-glass" | "industrial-standard" | "default";
 
 const STORAGE_KEY = "7028-theme";
-const THEME_CLASSES: Theme[] = ["liquid-glass", "cinnamon-bun", "industrial-standard"];
+const THEME_CLASSES: Theme[] = ["liquid-glass", "industrial-standard"];
 
 interface ThemeContextValue {
   theme: Theme;

@@ -18,12 +18,7 @@ const THEME_OPTIONS: ThemeOption[] = [
   {
     id: "liquid-glass",
     label: "Liquid Glass",
-    swatchColors: ["#dce8f8", "#ffffff", "#e8dff5"],
-  },
-  {
-    id: "cinnamon-bun",
-    label: "Cinnamon Bun",
-    swatchColors: ["#1a0e08", "#a0522d", "#f5deb3"],
+    swatchColors: ["#0a0e1a", "rgba(255,255,255,0.18)", "#66c0f4"],
   },
   {
     id: "industrial-standard",

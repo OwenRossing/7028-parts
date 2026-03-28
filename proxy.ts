@@ -7,12 +7,13 @@ const PUBLIC_PATHS = [
   "/api/auth/google",
   "/api/auth/local-login",
   "/api/auth/logout",
+  "/api/users",
   "/_next",
   "/favicon.ico",
   "/uploads",
 ];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
     return NextResponse.next();

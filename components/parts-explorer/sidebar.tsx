@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import { Settings } from "lucide-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/cn";
 import { PartListItem } from "./part-list-item";
@@ -285,8 +286,32 @@ export function Sidebar({
         )}
       </div>
 
+      {/* User strip + settings */}
+      <div className="px-3 py-2 border-t border-rim flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          {currentUser.avatarUrl ? (
+            <img src={currentUser.avatarUrl} alt="" className="w-5 h-5 rounded-full flex-shrink-0" />
+          ) : (
+            <div className="w-5 h-5 rounded-full bg-surface-card border border-rim flex items-center justify-center text-[10px] text-ink-dim flex-shrink-0">
+              {currentUser.displayName.charAt(0).toUpperCase()}
+            </div>
+          )}
+          <span className="text-xs text-ink-dim truncate">{currentUser.displayName}</span>
+          {currentUser.isAdmin && (
+            <span className="text-[10px] px-1 py-0.5 bg-brand-600/20 text-brand-400 rounded flex-shrink-0">admin</span>
+          )}
+        </div>
+        <a
+          href="/settings"
+          className="text-ink-dim hover:text-ink p-1 rounded-sm hover:bg-surface-hover transition-colors flex-shrink-0"
+          title="Settings"
+        >
+          <Settings size={13} />
+        </a>
+      </div>
+
       {/* Add part button */}
-      <div className="p-3 border-t border-rim">
+      <div className="px-3 pb-3">
         <button
           onClick={onAddPart}
           className="w-full py-2 text-sm text-brand-400 border border-brand-600/40 hover:bg-brand-600/10 rounded-sm transition-colors"

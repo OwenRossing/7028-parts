@@ -1,0 +1,157 @@
+/* ============================================================
+   Liquid Glass — Apple visionOS / iOS 18 aesthetic
+   All rules scoped to html.liquid-glass
+   ============================================================ */
+
+/* ── Body: layered radial gradients so backdrop-filter has real content to blur ── */
+html.liquid-glass body {
+  background:
+    radial-gradient(ellipse 70% 55% at 12% 62%, rgba(28, 58, 138, 0.58) 0%, transparent 100%),
+    radial-gradient(ellipse 55% 45% at 88% 12%, rgba(88, 28, 140, 0.45) 0%, transparent 100%),
+    radial-gradient(ellipse 50% 48% at 58% 90%, rgba(18, 80, 122, 0.38) 0%, transparent 100%),
+    radial-gradient(ellipse 40% 35% at 45% 40%, rgba(20, 50, 110, 0.2) 0%, transparent 100%),
+    #0a0e1a !important;
+  background-attachment: fixed !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif !important;
+}
+
+/* Page root must be transparent so the body gradient bleeds through the glass panels */
+html.liquid-glass .bg-surface-page {
+  background: transparent !important;
+}
+
+/* ── Glass blur layers ── */
+
+/* Sidebar: heaviest blur — this is the primary navigation surface */
+html.liquid-glass .bg-surface-sidebar {
+  backdrop-filter: blur(48px) saturate(180%);
+  -webkit-backdrop-filter: blur(48px) saturate(180%);
+  /* Specular right edge — brighter on top, fades down */
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.09) !important;
+}
+
+/* Nav / small panels */
+html.liquid-glass .bg-surface-nav {
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+}
+
+/* Cards: medium blur */
+html.liquid-glass .bg-surface-card {
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* Raised surfaces (dropdowns, popovers) */
+html.liquid-glass .bg-surface-raised {
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+}
+
+/* Modal / dialog: maximum blur, deep glass */
+html.liquid-glass .bg-surface-modal {
+  backdrop-filter: blur(64px) saturate(200%);
+  -webkit-backdrop-filter: blur(64px) saturate(200%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 40px 80px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.06) !important;
+}
+
+/* ── Modal backdrop overlay: slight blur on the dimmer itself ── */
+html.liquid-glass .bg-black\/60 {
+  background: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ── Border radius: Apple's generous roundness ── */
+
+/* Panels and containers */
+html.liquid-glass .rounded-sm {
+  border-radius: 14px !important;
+}
+
+/* Tailwind arbitrary [3px] — Button, Input, Card components */
+html.liquid-glass .rounded-\[3px\] {
+  border-radius: 12px !important;
+}
+
+/* Inputs: slightly less round than buttons */
+html.liquid-glass input.rounded-sm,
+html.liquid-glass input.rounded-\[3px\] {
+  border-radius: 10px !important;
+}
+
+/* ── Buttons: pill shape ── */
+html.liquid-glass button.rounded-\[3px\],
+html.liquid-glass button.rounded-sm {
+  border-radius: 9999px !important;
+}
+
+/* ── Select elements: rounded ── */
+html.liquid-glass select.rounded-sm,
+html.liquid-glass select {
+  border-radius: 10px !important;
+}
+
+/* ── Borders: specular white instead of flat dark rim ── */
+html.liquid-glass .border-rim {
+  border-color: rgba(255, 255, 255, 0.11) !important;
+}
+html.liquid-glass .border-rim-soft {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+html.liquid-glass .border-rim-light {
+  border-color: rgba(255, 255, 255, 0.22) !important;
+}
+html.liquid-glass .border-rim-btn {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Right/bottom section dividers: even softer */
+html.liquid-glass .border-r.border-rim,
+html.liquid-glass .border-b.border-rim,
+html.liquid-glass .border-t.border-rim {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ── Scrollbar: thin, translucent pill ── */
+html.liquid-glass ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+html.liquid-glass ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+html.liquid-glass ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-radius: 9999px !important;
+}
+html.liquid-glass ::-webkit-scrollbar-thumb:hover {
+  background: rgba(102, 192, 244, 0.55) !important;
+}
+
+/* ── Selection highlight ── */
+html.liquid-glass ::selection {
+  background: rgba(102, 192, 244, 0.28) !important;
+  color: #eef6ff !important;
+}
+
+/* ── Focus ring: glow instead of hard outline ── */
+html.liquid-glass :focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(102, 192, 244, 0.55), 0 0 12px rgba(102, 192, 244, 0.28) !important;
+}
+
+/* ── Surface hover: glass shimmer ── */
+html.liquid-glass .bg-surface-hover,
+html.liquid-glass .hover\:bg-surface-hover:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+}
+
+/* ── Status badges / small chips: pill ── */
+html.liquid-glass .rounded-full {
+  border-radius: 9999px !important;
+}
